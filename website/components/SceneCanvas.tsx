@@ -621,7 +621,8 @@ const SceneCanvas = forwardRef<SceneHandle, Props>(function SceneCanvas(
       hero.position.x += (tg.x - hero.position.x) * k;
       hero.position.y += (tg.y - hero.position.y) * k;
       hero.scale.setScalar(hero.scale.x + (tg.s - hero.scale.x) * k);
-      fadeGroup(hero, clamp((cz - 1.5) / 5, 0, 1));
+      // Hero fades: stay bright while camera zooms in (cz 10→4), then fade through (cz 4→-2)
+      fadeGroup(hero, clamp((cz + 2) / 6, 0, 1));
       heroGlobe.rotation.y = t * 0.15;
 
       // Moon orbit
