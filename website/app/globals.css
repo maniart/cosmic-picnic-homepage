@@ -1,0 +1,117 @@
+/* ─── Design tokens ─────────────────────────────────────────────────────── */
+:root {
+  /* Fonts (injected by next/font as CSS variables) */
+  /* --font-heading: Cormorant Garamond */
+  /* --font-body:    Lora */
+
+  /* Ground */
+  --color-bg: #050820;
+  --color-bg-gradient: radial-gradient(120% 90% at 50% 25%, #15245a 0%, #0a1238 45%, #050820 100%);
+
+  /* Text */
+  --color-text:         #fff4e0;
+  --color-text-head:    #fff6e6;
+  --color-text-sec:     #efe6d2;
+  --color-text-sec2:    #f6ecd8;
+  --color-text-sec3:    #e6dcc6;
+  --color-text-muted:   #c9c0ad;
+  --color-text-muted2:  #d9cfb8;
+  --color-text-ph:      #a79e8b;
+
+  /* Accent gold */
+  --color-accent:         #e1ad66;
+  --color-accent-light:   #facb8d;
+  --color-accent-hover:   #ffe3bf;
+  --color-accent-press:   #c9944f;
+  --color-accent-numeral: #f4c27a;
+
+  /* Hairlines */
+  --color-hairline:       rgba(255, 230, 180, 0.22);
+  --color-hairline-list:  rgba(255, 230, 180, 0.32);
+  --color-hairline-input: rgba(255, 230, 180, 0.35);
+
+  /* Tints */
+  --color-tint-hover: rgba(225, 173, 102, 0.14);
+  --color-tint-press: rgba(225, 173, 102, 0.24);
+  --color-tint-chip:  rgba(225, 173, 102, 0.16);
+  --color-tint-sel:   rgba(225, 173, 102, 0.35);
+
+  /* Glass */
+  --color-glass:   rgba(6, 10, 36, 0.62);
+  --color-overlay: rgba(5, 8, 32, 0.7);
+
+  /* 3D line colors */
+  --color-3d-warm:       #ffecc4;
+  --color-3d-gold:       #e1ad66;
+  --color-3d-grid:       rgba(159, 184, 255, 0.16);
+  --color-3d-earth-fill: #0b1a48;
+
+  /* Readability halo behind copy over the 3D scene */
+  --halo: radial-gradient(
+    closest-side,
+    rgba(5, 8, 32, 0.82) 0%,
+    rgba(5, 8, 32, 0.6) 55%,
+    rgba(5, 8, 32, 0) 100%
+  );
+
+  /* Text shadows for copy over the 3D scene */
+  --text-shadow:      0 1px 12px rgba(5, 8, 32, 0.95), 0 0 2px rgba(5, 8, 32, 0.9);
+  --text-shadow-hero: 0 1px 14px rgba(5, 8, 32, 0.9),  0 0 2px rgba(5, 8, 32, 0.8);
+
+  /* Layout */
+  --page-pad-x:    clamp(16px, 4vw, 40px);
+  --section-pad-x: 22px;
+}
+
+/* ─── Reset & base ──────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+p { margin: 0; }
+
+a {
+  color: var(--color-accent-light);
+  text-decoration: underline;
+  text-decoration-color: rgba(250, 203, 141, 0.45);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+  text-decoration-color: var(--color-accent-hover);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+:focus         { outline: none; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+::selection    { background: var(--color-tint-sel); }
+input::placeholder { color: var(--color-text-ph); }

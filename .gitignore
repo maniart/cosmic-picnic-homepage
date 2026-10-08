@@ -1,0 +1,21 @@
+# Dependencies
+website/node_modules/
+node_modules/
+
+# Next.js build output
+website/.next/
+website/out/
+
+# Environment variables — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Wrangler local state
+.wrangler/
+
+# macOS
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
