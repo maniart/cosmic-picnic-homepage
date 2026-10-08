@@ -17,18 +17,15 @@ export default function SectionNav() {
   const [wide,     setWide]     = useState(true);
   const [navHover, setNavHover] = useState(false);
   const progFillRef             = useRef<HTMLDivElement>(null);
-  const reduced                 = useRef(false);
+  const activeRef               = useRef(0); // shadow of active, avoids replaceState in setState
 
   useEffect(() => {
-    reduced.current =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     const onScroll = () => {
       const se  = document.scrollingElement ?? document.documentElement;
       const max = Math.max(1, se.scrollHeight - window.innerHeight);
       const mid = window.innerHeight / 2;
 
-      // Active section: last one whose top is above the midpoint
+      // Active section: last one whose top is at or above the midpoint
       let a = 0;
       SECTIONS.forEach((sec, i) => {
         const el = document.getElementById(sec.id);
@@ -39,13 +36,19 @@ export default function SectionNav() {
         a = SECTIONS.length - 1;
       }
 
-      // Update progress bar directly (no re-render)
+      // Update URL hash without adding a history entry
+      if (activeRef.current !== a) {
+        activeRef.current = a;
+        const hash = a === 0 ? '' : `#${SECTIONS[a].id}`;
+        history.replaceState(null, '', hash || location.pathname);
+        setActive(a);
+      }
+
+      // Update mobile progress bar directly (no re-render)
       if (progFillRef.current) {
         progFillRef.current.style.transform =
           `scaleY(${Math.min(1, se.scrollTop / max).toFixed(4)})`;
       }
-
-      setActive(prev => (prev !== a ? a : prev));
     };
 
     const onResize = () => {
@@ -53,7 +56,6 @@ export default function SectionNav() {
       onScroll();
     };
 
-    // Initial state
     setWide(window.innerWidth >= 760);
     onScroll();
 
@@ -64,15 +66,6 @@ export default function SectionNav() {
       window.removeEventListener('resize', onResize);
     };
   }, []);
-
-  const goTo = (i: number) => {
-    const el = document.getElementById(SECTIONS[i].id);
-    if (!el) return;
-    window.scrollTo({
-      top:      el.getBoundingClientRect().top + window.scrollY,
-      behavior: reduced.current ? 'auto' : 'smooth',
-    });
-  };
 
   return (
     <>
@@ -137,46 +130,44 @@ export default function SectionNav() {
               const cur = i === active;
               return (
                 <li key={sec.id} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <button
-                    onClick={() => goTo(i)}
+                  <a
+                    href={`#${sec.id}`}
                     aria-label={sec.label}
                     aria-current={cur ? 'step' : undefined}
                     style={{
-                      position:   'relative',
-                      display:    'flex',
-                      alignItems: 'center',
+                      position:       'relative',
+                      display:        'flex',
+                      alignItems:     'center',
                       justifyContent: 'flex-end',
-                      gap:        12,
-                      minHeight:  32,
-                      padding:    0,
-                      background: 'transparent',
-                      border:     'none',
-                      cursor:     'pointer',
-                      font:       `400 13px var(--font-body)`,
-                      color:      cur ? '#facb8d' : '#d9cfb8',
-                      transition: 'color .4s ease',
+                      gap:            12,
+                      minHeight:      32,
+                      padding:        0,
+                      textDecoration: 'none',
+                      font:           `400 13px var(--font-body)`,
+                      color:          cur ? '#facb8d' : '#d9cfb8',
+                      transition:     'color .4s ease',
                     }}
                     onMouseEnter={e => (e.currentTarget.style.color = '#facb8d')}
                     onMouseLeave={e => (e.currentTarget.style.color = cur ? '#facb8d' : '#d9cfb8')}
                   >
                     {/* Label */}
                     <span style={{
-                      whiteSpace:  'nowrap',
-                      opacity:     cur ? 1 : navHover ? 0.75 : 0,
-                      transition:  'opacity .4s ease',
-                      textShadow:  '0 0 12px #050820',
+                      whiteSpace: 'nowrap',
+                      opacity:    cur ? 1 : navHover ? 0.75 : 0,
+                      transition: 'opacity .4s ease',
+                      textShadow: '0 0 12px #050820',
                     }}>
                       {sec.label}
                     </span>
 
                     {/* Touch-target + dot */}
                     <span style={{
-                      width:       44,
-                      height:      32,
-                      display:     'flex',
-                      alignItems:  'center',
+                      width:          44,
+                      height:         32,
+                      display:        'flex',
+                      alignItems:     'center',
                       justifyContent: 'center',
-                      flexShrink:  0,
+                      flexShrink:     0,
                     }}>
                       <span style={{
                         width:        cur ? 13 : 7,
@@ -189,7 +180,7 @@ export default function SectionNav() {
                         display:      'block',
                       }} />
                     </span>
-                  </button>
+                  </a>
                 </li>
               );
             })}

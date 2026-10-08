@@ -33,10 +33,11 @@ interface Props {
   open:    boolean;
   onClose: () => void;
   audio:   AudioAPI;
+  email:   string;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export default function TasteFlow({ open, onClose, audio }: Props) {
+export default function TasteFlow({ open, onClose, audio, email }: Props) {
   const [step,        setStep]        = useState<Step>('confirmed');
   const [beforeScore, setBeforeScore] = useState<number | null>(null);
   const [afterScore,  setAfterScore]  = useState<number | null>(null);
@@ -136,7 +137,21 @@ export default function TasteFlow({ open, onClose, audio }: Props) {
     setStep('after');
   }, [clearTimers, audio]);
 
-  const goToReflection = useCallback(() => setStep('reflection'), []);
+  const goToReflection = useCallback(() => {
+    setStep('reflection');
+    if (email) {
+      fetch('/api/taste', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          email,
+          before_score:  beforeScore,
+          after_score:   afterScore,
+          noticed_word:  word.trim() || null,
+        }),
+      }).catch(() => {});
+    }
+  }, [email, beforeScore, afterScore, word]);
 
   // ── Cleanup on unmount ─────────────────────────────────────────────────────
   useEffect(() => () => { clearTimers(); }, [clearTimers]);

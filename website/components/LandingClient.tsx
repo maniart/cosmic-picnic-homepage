@@ -15,6 +15,7 @@ import SectionNav from './SectionNav';
 export default function LandingClient() {
   const audio         = useAudio();
   const sceneRef      = useRef<SceneHandle>(null);
+  const signedUpEmail = useRef('');
   const [tasteFlowOpen, setTasteFlowOpen] = useState(false);
 
   // First canvas click → boot the drone + opening chime + ripple
@@ -28,8 +29,9 @@ export default function LandingClient() {
     if (audio.soundOn) audio.chime();
   }, [audio]);
 
-  // After a successful sign-up → ripple + open taste flow
-  const handleSignUp = useCallback((_email: string) => {
+  // After a successful sign-up → store email, ripple + open taste flow
+  const handleSignUp = useCallback((email: string) => {
+    signedUpEmail.current = email;
     sceneRef.current?.spawnRipple(window.innerWidth / 2, window.innerHeight / 2);
     setTasteFlowOpen(true);
   }, []);
@@ -63,6 +65,7 @@ export default function LandingClient() {
         open={tasteFlowOpen}
         onClose={() => setTasteFlowOpen(false)}
         audio={audio}
+        email={signedUpEmail.current}
       />
     </div>
   );
