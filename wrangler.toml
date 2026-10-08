@@ -1,4 +1,4 @@
-name                  = "cosmic-picnic"
+name                  = "cosmic-picnic-homepage"
 compatibility_date    = "2025-10-01"
 compatibility_flags   = ["nodejs_compat"]
 pages_build_output_dir = "website/out"
