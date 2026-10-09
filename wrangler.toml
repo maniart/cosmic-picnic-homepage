@@ -1,10 +1,10 @@
 name                  = "cosmic-picnic-homepage"
 compatibility_date    = "2025-10-01"
 compatibility_flags   = ["nodejs_compat"]
-pages_build_output_dir = "website/out"
+pages_build_output_dir = "./out"
 
 [assets]
-directory = "./website/out"
+directory = "./out"
 
 [[d1_databases]]
 binding       = "DB"
