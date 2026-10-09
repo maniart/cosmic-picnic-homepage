@@ -1,10 +1,9 @@
 # Dependencies
-website/node_modules/
 node_modules/
 
 # Next.js build output
-website/.next/
-website/out/
+.next/
+out/
 
 # Environment variables — never commit secrets
 .env
@@ -19,3 +18,4 @@ website/out/
 
 # TypeScript
 *.tsbuildinfo
+next-env.d.ts
