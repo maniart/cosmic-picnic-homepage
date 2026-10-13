@@ -75,25 +75,32 @@ async function handleTaste(request, env) {
 
 export default {
   async fetch(request, env) {
-    const { pathname, method } = new URL(request.url);
+    try {
+      const { pathname, method } = new URL(request.url);
 
-    if (method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders() });
+      if (method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: corsHeaders() });
+      }
+
+      if (pathname === '/api/ping' && method === 'GET') {
+        return reply({ pong: true });
+      }
+
+      if (pathname === '/api/signup' && method === 'POST') {
+        return handleSignup(request, env);
+      }
+
+      if (pathname === '/api/taste' && method === 'POST') {
+        return handleTaste(request, env);
+      }
+
+      // Fall through to static assets for everything else
+      return env.ASSETS.fetch(request);
+    } catch (err) {
+      return new Response(JSON.stringify({ error: err?.message ?? String(err) }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
-
-    if (pathname === '/api/ping' && method === 'GET') {
-      return reply({ pong: true });
-    }
-
-    if (pathname === '/api/signup' && method === 'POST') {
-      return handleSignup(request, env);
-    }
-
-    if (pathname === '/api/taste' && method === 'POST') {
-      return handleTaste(request, env);
-    }
-
-    // Fall through to static assets for everything else
-    return env.ASSETS.fetch(request);
   },
 };
