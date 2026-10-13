@@ -22,6 +22,7 @@ export const metadata: Metadata = {
   title: "Cosmic Picnic: Meditate out loud",
   description:
     "Active meditation with your voice. Hum, tone, and let the sound answer back. Join the iPhone beta.",
+  icons: { icon: "/favicon.svg" },
   openGraph: {
     title: "Cosmic Picnic: Meditate out loud",
     description:
