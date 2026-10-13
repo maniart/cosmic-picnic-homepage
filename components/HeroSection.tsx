@@ -20,7 +20,7 @@ export default function HeroSection() {
 
   return (
     <section
-      id="s-hero"
+      id="hero"
       ref={sectionRef}
       data-screen-label="01 Hero"
       style={{
@@ -102,7 +102,7 @@ export default function HeroSection() {
 
       {/* Down-arrow — scroll to next section */}
       <a
-        href="#s-about"
+        href="#about"
         aria-label="Next section"
         style={{
           position: 'absolute',

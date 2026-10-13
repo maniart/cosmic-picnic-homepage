@@ -1,7 +1,7 @@
 export default function AboutSection() {
   return (
     <section
-      id="s-about"
+      id="about"
       data-screen-label="02 About"
       style={{
         overflowX: 'clip',

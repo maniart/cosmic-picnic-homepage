@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 
 // ── Section registry ──────────────────────────────────────────────────────────
 const SECTIONS = [
-  { id: 's-hero',  label: 'Meditate out loud' },
-  { id: 's-about', label: 'About'             },
-  { id: 's-how',   label: 'How it works'      },
-  { id: 's-why',   label: 'Why your voice'    },
+  { id: 'hero',  label: 'Meditate out loud' },
+  { id: 'about', label: 'About'             },
+  { id: 'how',   label: 'How it works'      },
+  { id: 'why',   label: 'Why your voice'    },
   { id: 'join',    label: 'Join the beta'      },
 ];
 

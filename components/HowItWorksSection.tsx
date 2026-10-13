@@ -16,7 +16,7 @@ const STEPS = [
 export default function HowItWorksSection() {
   return (
     <section
-      id="s-how"
+      id="how"
       data-screen-label="03 How it works"
       style={{
         overflowX: 'clip',

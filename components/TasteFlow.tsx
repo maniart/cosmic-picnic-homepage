@@ -240,7 +240,7 @@ export default function TasteFlow({ open, onClose, audio, email }: Props) {
           />
         )}
         {step === 'reflection' && (
-          <StepReflection before={beforeScore} after={afterScore} />
+          <StepReflection before={beforeScore} after={afterScore} onClose={handleClose} />
         )}
       </div>
     </div>
@@ -453,7 +453,7 @@ function StepAfter({
 }
 
 // ── Step: reflection ──────────────────────────────────────────────────────────
-function StepReflection({ before, after }: { before: number | null; after: number | null }) {
+function StepReflection({ before, after, onClose }: { before: number | null; after: number | null; onClose: () => void }) {
   const improved = after !== null && before !== null && after > before;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
@@ -478,6 +478,12 @@ function StepReflection({ before, after }: { before: number | null; after: numbe
       <p style={{ margin: 0, fontSize: 17, lineHeight: 1.6, color: 'var(--color-text-sec3)' }}>
         We&rsquo;ll write when the beta opens.
       </p>
+      <OutlinePill
+        onClick={onClose}
+        style={{ marginTop: 8, padding: '14px 40px', minHeight: 52 }}
+      >
+        Back to the site
+      </OutlinePill>
     </div>
   );
 }

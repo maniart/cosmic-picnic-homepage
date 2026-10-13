@@ -10,3 +10,7 @@ directory = "./out"
 binding       = "DB"
 database_name = "cosmic-picnic-signups"
 database_id   = "646e91df-cae4-4e61-bb46-bf292797c062"
+
+[observability.logs]
+enabled = true
+invocation_logs = true

@@ -40,7 +40,7 @@ async function handleSignup(request, env) {
 
   if (env.LOOPS_API_KEY) {
     try {
-      await fetch('https://app.loops.so/api/v1/contacts/create', {
+      const loopsRes = await fetch('https://app.loops.so/api/v1/contacts/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.LOOPS_API_KEY}` },
         body: JSON.stringify({
@@ -52,7 +52,11 @@ async function handleSignup(request, env) {
           toningAnswer: body.toning ?? '',
         }),
       });
-    } catch { /* Loops down must not block signup */ }
+      const loopsBody = await loopsRes.text();
+      console.log(`[loops] status=${loopsRes.status} body=${loopsBody}`);
+    } catch (err) {
+      console.error(`[loops] fetch error: ${err?.message ?? String(err)}`);
+    }
   }
 
   return reply({ ok: true, already: false });

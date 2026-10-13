@@ -1,7 +1,7 @@
 export default function WhyYourVoiceSection() {
   return (
     <section
-      id="s-why"
+      id="why"
       data-screen-label="04 Why your voice"
       style={{
         overflowX: 'clip',
