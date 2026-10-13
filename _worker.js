@@ -94,8 +94,8 @@ export default {
         return handleTaste(request, env);
       }
 
-      // Fall through to static assets for everything else
-      return env.ASSETS.fetch(request);
+      // Debug: show what path is arriving before ASSETS fallback
+      return reply({ debug: true, pathname, method });
     } catch (err) {
       return new Response(JSON.stringify({ error: err?.message ?? String(err) }), {
         status: 500,
