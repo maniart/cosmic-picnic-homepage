@@ -76,7 +76,8 @@ async function handleTaste(request, env) {
 export default {
   async fetch(request, env) {
     try {
-      const { pathname, method } = new URL(request.url);
+      const { pathname } = new URL(request.url);
+      const method = request.method;
 
       if (method === 'OPTIONS') {
         return new Response(null, { status: 204, headers: corsHeaders() });
@@ -94,8 +95,8 @@ export default {
         return handleTaste(request, env);
       }
 
-      // Debug: show what path is arriving before ASSETS fallback
-      return reply({ debug: true, pathname, method });
+      // Fall through to static assets for everything else
+      return env.ASSETS.fetch(request);
     } catch (err) {
       return new Response(JSON.stringify({ error: err?.message ?? String(err) }), {
         status: 500,
