@@ -314,7 +314,7 @@ function SiteFooter() {
         lineHeight: 1.4,
         color: 'var(--color-text-sec)',
       }}>
-        Made by Mâni Nilchiani — Musician and Creative Technologist building a mindful future.
+        Made by <a href="https://mani.io" target="_blank" rel="noopener noreferrer">Mâni Nilchiani</a> — Musician and Creative Technologist building a mindful future.
       </p>
 
       <div style={{

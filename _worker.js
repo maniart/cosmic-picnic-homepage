@@ -38,7 +38,6 @@ async function handleSignup(request, env) {
     .bind(email, body.meditate ?? null, body.toning ?? null, referrer)
     .run();
 
-    console.log(`\nENV: ${JSON.stringify(env, null, 2)}\n`);
   if (env.LOOPS_API_KEY) {
     try {
       const loopsRes = await fetch('https://app.loops.so/api/v1/contacts/create', {
