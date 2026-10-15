@@ -70,7 +70,7 @@ export default function HeroSection() {
           textWrap: 'pretty',
           textShadow: 'var(--text-shadow-hero)',
         }}>
-          Cosmic Picnic is active meditation for your voice. Hum and tone, and the app listens back in sound, touch and light.
+          Cosmic Picnic is active meditation through voice. Through guided humming and vocalizing sessions, the app helps you regulate and align with cosmic frequencies.
         </p>
 
         <a
