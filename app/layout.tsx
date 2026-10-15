@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "https://cosmicpicnic.app/landing-page-og-image.jpg",
+        url: "https://cosmicpicnic.app/landing-page-og-preview-image.jpg",
         width: 1200,
         height: 630,
         alt: "Cosmic Picnic — Meditate out loud",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title: "Cosmic Picnic: Meditate out loud",
     description:
       "Active meditation with your voice. Hum, tone, and let the sound answer back. Join the iPhone beta.",
-    images: ["https://cosmicpicnic.app/landing-page-og-image.jpg"],
+    images: ["https://cosmicpicnic.app/landing-page-og-preview-image.jpg"],
   },
 };
 
