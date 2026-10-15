@@ -27,7 +27,7 @@ const LINES: [number, string, ('in' | 'out')?][] = [
 ];
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type Step = 'confirmed' | 'later' | 'before' | 'practice' | 'after' | 'reflection';
+type Step = 'confirmed' | 'later' | 'soundcheck' | 'before' | 'practice' | 'after' | 'reflection';
 
 interface Props {
   open:    boolean;
@@ -82,8 +82,8 @@ export default function TasteFlow({ open, onClose, audio, email }: Props) {
   const startPractice = useCallback(() => {
     clearTimers();
     audio.setPracticeLevel(true);
-    // Boot audio engine if first interaction (ring=false — bowl is the start cue)
-    if (!audio.audioStarted || audio.soundOn) audio.startAmbient(false);
+    // Audio was already started in goToSoundCheck; only re-start if somehow not running
+    if (!audio.audioStarted) audio.startAmbient(false);
 
     let bowlStruck = false;
     const t0 = performance.now();
@@ -121,6 +121,11 @@ export default function TasteFlow({ open, onClose, audio, email }: Props) {
     setStep('later');
     laterTimer.current = setTimeout(() => handleClose(), 3200);
   }, [handleClose]);
+
+  const goToSoundCheck = useCallback(() => {
+    audio.startAmbient(false);
+    setStep('soundcheck');
+  }, [audio]);
 
   const goToBefore = useCallback(() => setStep('before'), []);
 
@@ -218,8 +223,9 @@ export default function TasteFlow({ open, onClose, audio, email }: Props) {
         flexDirection: 'column',
         alignItems: 'center',
       }}>
-        {step === 'confirmed'  && <StepConfirmed  onBegin={goToBefore} onLater={goToLater} />}
+        {step === 'confirmed'  && <StepConfirmed  onBegin={goToSoundCheck} onLater={goToLater} />}
         {step === 'later'      && <StepLater />}
+        {step === 'soundcheck' && <StepSoundCheck onReady={goToBefore} />}
         {step === 'before'     && <StepScale title="How do you feel right now?" value={beforeScore} onPick={pickBefore} />}
         {step === 'practice'   && (
           <StepPractice
@@ -276,6 +282,40 @@ function StepLater() {
     <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 400, fontStyle: 'italic', fontSize: 'clamp(36px,7vw,48px)', lineHeight: 1.1, margin: 0, color: 'var(--color-text-head)' }}>
       See you in November.
     </h2>
+  );
+}
+
+// ── Step: sound check ─────────────────────────────────────────────────────────
+function StepSoundCheck({ onReady }: { onReady: () => void }) {
+  const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, textAlign: 'center' }}>
+      <h2 style={{
+        fontFamily: 'var(--font-heading)',
+        fontWeight: 400,
+        fontSize: 'clamp(36px,7vw,52px)',
+        lineHeight: 1.05,
+        margin: 0,
+        color: 'var(--color-text-head)',
+        textWrap: 'balance',
+      }}>
+        Can you hear the soundscape?
+      </h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 17, lineHeight: 1.6, color: 'var(--color-text-sec)' }}>
+        <p style={{ margin: 0 }}>Turn your volume up.</p>
+        {isIOS && (
+          <p style={{ margin: 0, color: 'var(--color-text-sec3)' }}>
+            On iPhone, the small switch above the volume buttons should face toward the screen — not show orange.
+          </p>
+        )}
+      </div>
+      <OutlinePill
+        onClick={onReady}
+        style={{ marginTop: 8, padding: '14px 40px', minHeight: 52 }}
+      >
+        I can hear the soundscape
+      </OutlinePill>
+    </div>
   );
 }
 

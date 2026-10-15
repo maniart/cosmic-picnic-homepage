@@ -3,6 +3,9 @@
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+// Paths that scanners probe but we never serve — return 404 immediately
+const JUNK_RE = /\.php$|\.asp(x?)$|\/\.git\/|\/wp-|\/xmlrpc|\/admin\b|\/backend\b|\/phpmyadmin/i;
+
 function corsHeaders() {
   return {
     'Access-Control-Allow-Origin':  '*',
@@ -40,7 +43,7 @@ async function handleSignup(request, env) {
 
   if (env.LOOPS_API_KEY) {
     try {
-      const loopsRes = await fetch('https://app.loops.so/api/v1/contacts/create', {
+      await fetch('https://app.loops.so/api/v1/contacts/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.LOOPS_API_KEY}` },
         body: JSON.stringify({
@@ -52,11 +55,7 @@ async function handleSignup(request, env) {
           toningAnswer: body.toning ?? '',
         }),
       });
-      const loopsBody = await loopsRes.text();
-      console.log(`[loops] status=${loopsRes.status} body=${loopsBody}`);
-    } catch (err) {
-      console.error(`[loops] fetch error: ${err?.message ?? String(err)}`);
-    }
+    } catch { /* Loops down must not block signup */ }
   }
 
   return reply({ ok: true, already: false });
@@ -82,6 +81,10 @@ export default {
     try {
       const { pathname } = new URL(request.url);
       const method = request.method;
+
+      if (JUNK_RE.test(pathname)) {
+        return new Response(null, { status: 404 });
+      }
 
       if (method === 'OPTIONS') {
         return new Response(null, { status: 204, headers: corsHeaders() });
